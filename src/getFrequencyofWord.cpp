@@ -11,31 +11,59 @@ Note: Dont modify original str or word,Just return count ,Spaces can also be par
 */
 
 #include <stdlib.h>
-
+int check(char str[], char word[], int i, int j);
 int count_word_in_str_way_1(char *str, char *word){
 	if (str != NULL || word != NULL)
 	{
 		int i, j,count = 0;
-		for (i = 0, j = 0; *(str + i); i++)
+		for (i = 0; *(str + i); i++)
 		{
-			if (str[i] == word[j])
-			{
-				if (word[j + 1] == '\0'){
-					count++;
-					j = 0;
+			for (j = 0; word[j]; j++){
+				if (str[i+j] != word[j])
+				{
+					break;
 				}
-				else
-					j++;
 			}
-			else j = 0;
+			if (word[j] == '\0')
+				count++;
 		}
 		return count;
 	}
 	else
 		return 0;
 }
-
 int count_word_int_str_way_2_recursion(char *str, char *word){
-	return 0;
+	int count = 0;
+	for (int i = 0; str[i]; i++)
+	{
+		if (check(str, word, i, 0) != 0)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+int check(char str[], char word[], int i, int j)
+{
+	if (str[i] == '\0' && str[i] == word[j])
+	{
+		return 1;
+	}
+	else if (str[i] == NULL && str[i] != word[j])
+	{
+		return 0;
+	}
+	else if (str[i] != '\0' && word[j] == '\0')
+	{
+		return 1;
+	}
+	else if (str[i] == word[j])
+	{
+		return check(str, word, i + 1, j + 1);
+	}
+	else if (str[i] != word[j])
+	{
+		return 0;
+	}
 }
 
